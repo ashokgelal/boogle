@@ -24,12 +24,21 @@
 #define TYPE(dev) (MINOR(dev) >> 4)
 #define NUM(dev) (MINOR(dev) & 0xf)
 
+struct booga_device {
+	char *str;
+	unsigned int number;
+	unsigned int usage;
+};
+typedef struct booga_device *booga_device_ptr;
+
 struct booga_stats{
 	long int num_open;
 	long int num_close;
 	long int num_read;
 	long int num_write;
+	booga_device_ptr dev;
 };
+
 
 typedef struct booga_stats booga_stats;
 extern booga_stats Booga_Device_Stats;
