@@ -43,6 +43,23 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.1741208331.320257250" name="/" resourcePath="src">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.debug.842395539" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.debug" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.gnu.archiver.base.829361866" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.1214358877"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.497882837" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.861823775"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.363150178" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.168597434">
+								<option id="gnu.c.compiler.option.include.paths.1064737263" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/lib/modules/3.0.0-12-generic/build/include"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.799712606" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1692244271" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1536933283"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.579362786" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1753372269"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.debug.1802797847" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug.1361934234">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1905728699" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
@@ -101,8 +118,14 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="booga.cdt.managedbuild.target.gnu.exe.1374531178" name="Executable" projectType="cdt.managedbuild.target.gnu.exe"/>
 	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/booga"/>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1741208331;cdt.managedbuild.config.gnu.exe.debug.1741208331.320257250;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.363150178;cdt.managedbuild.tool.gnu.c.compiler.input.799712606">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1741208331;cdt.managedbuild.config.gnu.exe.debug.1741208331.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.168597434;cdt.managedbuild.tool.gnu.c.compiler.input.241620486">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
