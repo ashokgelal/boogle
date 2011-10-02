@@ -35,7 +35,7 @@ MODULE_LICENSE("GPL");
 static booga_stats *booga_device_stats;
 
 static int booga_open(struct inode *inode, struct file *filp);
-static int booga_release(struct innode *inode, struct file *filp);
+static int booga_release(struct inode *inode, struct file *filp);
 static ssize_t booga_read(struct file *filp, char *buf, size_t count, loff_t *f_pos);
 static ssize_t booga_write(struct file *filp, const char *buf, size_t count, loff_t *f_pos);
 static int __init booga_init(void);
@@ -45,7 +45,6 @@ static struct file_operations booga_fops = {
 		.llseek	= NULL,
 		.read	= booga_read,
 		.write	= booga_write,
-		.ioctl	= NULL,
 		.open	= booga_open,
 		.release = booga_release,
 };
@@ -60,8 +59,7 @@ static int booga_open(struct inode *inode, struct file *filp){
 	MODULE_USAGE_UP;
 	return 0;
 }
-
-static int booga_release(struct innode *inode, struct file *filp){
+static int booga_release(struct inode *inode, struct file *filp){
 	booga_device_stats->num_close++;
 	MODULE_USAGE_DOWN;
 	return 0;
