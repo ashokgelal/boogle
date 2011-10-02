@@ -1,0 +1,8 @@
+#!/bin/sh
+
+module="booga"
+device="booga"
+
+/sbin/rmmod $module $* || exit 1
+
+rm -f /dev/${device}[0-3] /dev/${device}
