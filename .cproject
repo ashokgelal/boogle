@@ -45,10 +45,11 @@
 					</folderInfo>
 					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.1741208331.320257250" name="/" resourcePath="src">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.debug.842395539" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.debug" unusedChildren="">
+							<targetPlatform id="cdt.managedbuild.target.gnu.platform.exe.debug" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.829361866" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.1214358877"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.497882837" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.861823775"/>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.363150178" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.168597434">
-								<option id="gnu.c.compiler.option.include.paths.1064737263" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.c.compiler.option.include.paths.1064737263" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/lib/modules/3.0.0-12-generic/build/include"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.799712606" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>

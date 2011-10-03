@@ -29,14 +29,16 @@ struct booga_device {
 	unsigned int number;
 	unsigned int usage;
 };
-typedef struct booga_device *booga_device_ptr;
+typedef struct booga_device* booga_device_ptr;
+typedef struct booga_device booga_device;
 
 struct booga_stats{
 	long int num_open;
 	long int num_close;
 	long int bytes_read;
 	long int bytes_written;
-	booga_device_ptr dev;
+	struct booga_device devs[4];
+	//booga_device_ptr dev;
 };
 typedef struct booga_stats booga_stats;
 
