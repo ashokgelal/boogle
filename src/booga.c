@@ -36,10 +36,6 @@ MODULE_LICENSE("GPL");
 
 uint current_device;
 uint random_phrases_count[4];
-uint boogaCount;
-uint googooCount;
-uint nekaCount;
-uint woogaCount;
 
 static booga_stats *booga_device_stats;
 
@@ -64,7 +60,7 @@ static int booga_open(struct inode *inode, struct file *filp){
 	if (num >= booga_nr_devs) return -ENODEV;
 	current_device = num;
 	printk("<1>booga_open invoked.%d\n", num);
-	//(booga_device_stats->dev+num)->usage++;
+	booga_device_stats->devs[num].usage++;
 	filp->f_op = &booga_fops;
 
 	booga_device_stats->num_open++;
@@ -124,8 +120,6 @@ static ssize_t booga_read(struct file *filp, char *buf, size_t count, loff_t *f_
 
 	fail_malloc:
 		return result;
-	/*
-		*/
 }
 
 static ssize_t booga_write(struct file *filp, const char *buf, size_t count, loff_t *f_pos){
@@ -139,64 +133,51 @@ static char* get_random_phrase(void){
 	uint choice ;
 	get_random_bytes(&randval, 1);
 	choice = (randval & 0x7F) % 4;
-	//random_phrases_count[choice]++;
+	printk("<1> Choice: %d\n", choice);
+	random_phrases_count[choice]++;
 	switch(choice){
 		case 0:
-			boogaCount++;
 			return "booga! booga!";
 		case 1:
-			googooCount++;
 			return "googoo! gaagaa!";
 		case 2:
-			nekaCount++;
-			return "neka! maka!";
-		case 3:
-			woogaCount++;
 			return "wooga! wooga!";
+		case 3:
+			return "neka! maka!";
 	}
 	return "";
 }
 
 static void init_booga_device_stats(void){
+	int i;
 	booga_device_stats->bytes_read = 0;
 	booga_device_stats->bytes_written = 0;
 	booga_device_stats->num_open = 0;
 	booga_device_stats->num_close = 0;
 
-	booga_device_stats->devs[0].number=0;
-	booga_device_stats->devs[0].usage=0;
-
-	booga_device_stats->devs[1].number=0;
-	booga_device_stats->devs[1].usage=0;
-
-	booga_device_stats->devs[2].number=0;
-	booga_device_stats->devs[2].usage=0;
-
-	booga_device_stats->devs[3].number=0;
-	booga_device_stats->devs[3].usage=0;
-
-	boogaCount = 0;
-	woogaCount = 0;
-	googooCount = 0;
-	nekaCount = 0;
+	for(i=0; i<booga_nr_devs; i++){
+		booga_device_stats->devs[i].number=0;
+		booga_device_stats->devs[i].usage=0;
+		random_phrases_count[i] = 0;
+	}
 }
 
 static int booga_read_procmem(char *buf, char **start, off_t offset, int count, int *eof, void *data){
 	int len = 0;
+	int i = 0;
 	printk("<1> booga device procmem requested\n");
 	len = sprintf(buf, "bytes read = %ld\n", booga_device_stats->bytes_read);
 	len += sprintf(buf+len, "bytes written = %ld\n", booga_device_stats->bytes_written);
 	len += sprintf(buf+len, "number of opens:\n");
-	len += sprintf(buf+len, "\t/dev/booga0 = %d\n", booga_device_stats->devs[0].usage);
-	len += sprintf(buf+len, "\t/dev/booga0 = %d\n", booga_device_stats->devs[1].usage);
-	len += sprintf(buf+len, "\t/dev/booga0 = %d\n", booga_device_stats->devs[2].usage);
-	len += sprintf(buf+len, "\t/dev/booga0 = %d\n", booga_device_stats->devs[3].usage);
+	for(i=0; i<booga_nr_devs; i++){
+		len += sprintf(buf+len, "\t/dev/booga%d = %d\n", i, booga_device_stats->devs[i].usage);
+	}
 
 	len += sprintf(buf+len, "strings outputs:\n");
-	len += sprintf(buf+len, "\tbooga! booga!: %d\n", boogaCount);
-	len += sprintf(buf+len, "\tgoogoo! gaga!: %d\n", googooCount);
-	len += sprintf(buf+len, "\twooga! wooga!: %d\n", woogaCount);
-	len += sprintf(buf+len, "\tneka! maka!: %d\n", nekaCount);
+	len += sprintf(buf+len, "\tbooga! booga!: %d\n", random_phrases_count[0]);
+	len += sprintf(buf+len, "\tgoogoo! gaga!: %d\n", random_phrases_count[1]);
+	len += sprintf(buf+len, "\twooga! wooga!: %d\n", random_phrases_count[2]);
+	len += sprintf(buf+len, "\tneka! maka!: %d\n", random_phrases_count[3]);
 	return len;
 }
 
@@ -219,14 +200,6 @@ static __init int booga_init(void){
 		goto fail_malloc;
 	}
 
-	/*
-	booga_device_stats->devs = (booga_device_ptr)kmalloc(sizeof(booga_device_ptr)*4, GFP_KERNEL);
-	if(!booga_device_stats->devs){
-		result = -ENOMEM;
-		goto fail_malloc;
-	}
-	*/
-
 	init_booga_device_stats();
 	create_proc_read_entry("driver/booga", 0, NULL, booga_read_procmem, NULL);
 
@@ -240,7 +213,6 @@ static __init int booga_init(void){
 
 static __exit void booga_exit(void){
 	remove_proc_entry("driver/booga", NULL);
-	//kfree(booga_device_stats->devs);
 	kfree(booga_device_stats);
 	unregister_chrdev(booga_major, "booga");
 	printk("<1> booga device driver version 0.1: unloaded\n");
