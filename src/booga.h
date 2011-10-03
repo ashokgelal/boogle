@@ -34,12 +34,11 @@ typedef struct booga_device *booga_device_ptr;
 struct booga_stats{
 	long int num_open;
 	long int num_close;
-	long int num_read;
-	long int num_write;
+	long int bytes_read;
+	long int bytes_written;
 	booga_device_ptr dev;
 };
-
-
 typedef struct booga_stats booga_stats;
+
 extern booga_stats Booga_Device_Stats;
 #endif /* __BOOGA_H */
