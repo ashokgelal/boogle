@@ -32,11 +32,9 @@ struct booga_device {
 typedef struct booga_device booga_device;
 
 struct booga_stats{
-	long int num_open;
-	long int num_close;
 	long int bytes_read;
 	long int bytes_written;
-	struct booga_device devs[BOOGA_NR_DEVS];
+	booga_device devs[BOOGA_NR_DEVS];
 };
 typedef struct booga_stats booga_stats;
 

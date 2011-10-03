@@ -36,7 +36,7 @@ MODULE_LICENSE("GPL");
 
 uint current_device;
 uint random_phrases_count[4];
-
+char * random_phrases[] = {"booga! booga!", "googoo! gaga!", "wooga! wooga!", "neka! maka!"};
 static booga_stats *booga_device_stats;
 
 static int booga_open(struct inode *inode, struct file *filp);
@@ -63,13 +63,11 @@ static int booga_open(struct inode *inode, struct file *filp){
 	booga_device_stats->devs[num].usage++;
 	filp->f_op = &booga_fops;
 
-	booga_device_stats->num_open++;
 	MODULE_USAGE_UP;
 	return 0;
 }
 static int booga_release(struct inode *inode, struct file *filp){
 	printk("<1>booga_release invoked.\n");
-	booga_device_stats->num_close++;
 	MODULE_USAGE_DOWN;
 	return 0;
 }
@@ -90,10 +88,9 @@ static ssize_t booga_read(struct file *filp, char *buf, size_t count, loff_t *f_
 
 	random = get_random_phrase();
 	temp = random;
-	for(i=0; i<count; i++){
+	for(i=0; i<count; i++) {
 		// if temp is point to the last character...
-		if(*temp=='\0')
-		{
+		if(*temp=='\0') {
 			// reset the pointer so that it points to the first character from 'random' str
 			temp = random;
 			booga_device_stats->devs[current_device].str[i] = ' ';
@@ -105,19 +102,15 @@ static ssize_t booga_read(struct file *filp, char *buf, size_t count, loff_t *f_
 	}
 
 	status = __copy_to_user(buf, booga_device_stats->devs[current_device].str, count);
-	if (status > 0) {
+	if (status > 0)
 		printk("simple: Could not copy %d bytes\n", status);
-	}
 
 	if(booga_device_stats->devs[current_device].str)
-	{
 		kfree(booga_device_stats->devs[current_device].str);
-	}
 
 	booga_device_stats->bytes_read += count;
 
 	return count;
-
 	fail_malloc:
 		return result;
 }
@@ -133,27 +126,14 @@ static char* get_random_phrase(void){
 	uint choice ;
 	get_random_bytes(&randval, 1);
 	choice = (randval & 0x7F) % 4;
-	printk("<1> Choice: %d\n", choice);
 	random_phrases_count[choice]++;
-	switch(choice){
-		case 0:
-			return "booga! booga!";
-		case 1:
-			return "googoo! gaagaa!";
-		case 2:
-			return "wooga! wooga!";
-		case 3:
-			return "neka! maka!";
-	}
-	return "";
+	return random_phrases[choice];
 }
 
 static void init_booga_device_stats(void){
 	int i;
 	booga_device_stats->bytes_read = 0;
 	booga_device_stats->bytes_written = 0;
-	booga_device_stats->num_open = 0;
-	booga_device_stats->num_close = 0;
 
 	for(i=0; i<booga_nr_devs; i++){
 		booga_device_stats->devs[i].number=0;
@@ -169,15 +149,12 @@ static int booga_read_procmem(char *buf, char **start, off_t offset, int count, 
 	len = sprintf(buf, "bytes read = %ld\n", booga_device_stats->bytes_read);
 	len += sprintf(buf+len, "bytes written = %ld\n", booga_device_stats->bytes_written);
 	len += sprintf(buf+len, "number of opens:\n");
-	for(i=0; i<booga_nr_devs; i++){
-		len += sprintf(buf+len, "\t/dev/booga%d = %d\n", i, booga_device_stats->devs[i].usage);
-	}
+	for(i=0; i<booga_nr_devs; i++)
+		len += sprintf(buf+len, "\t/dev/booga%d\t= %d times\n", i, booga_device_stats->devs[i].usage);
 
 	len += sprintf(buf+len, "strings outputs:\n");
-	len += sprintf(buf+len, "\tbooga! booga!: %d\n", random_phrases_count[0]);
-	len += sprintf(buf+len, "\tgoogoo! gaga!: %d\n", random_phrases_count[1]);
-	len += sprintf(buf+len, "\twooga! wooga!: %d\n", random_phrases_count[2]);
-	len += sprintf(buf+len, "\tneka! maka!: %d\n", random_phrases_count[3]);
+	for(i=0; i<booga_nr_devs; i++)
+		len += sprintf(buf+len, "\t%s\t= %d times\n", random_phrases[i], random_phrases_count[i]);
 	return len;
 }
 
