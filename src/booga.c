@@ -24,7 +24,10 @@
 #include <linux/types.h>
 #include <linux/proc_fs.h>
 #include <linux/random.h>
+#include <linux/rculist.h>
 #include <asm-generic/uaccess.h>
+#include <asm-generic/current.h>
+
 #include "booga.h"
 
 static int booga_major = BOOGA_MAJOR;
@@ -62,7 +65,6 @@ static int booga_open(struct inode *inode, struct file *filp){
 	printk("<1>booga_open invoked.%d\n", num);
 	booga_device_stats->devs[num].usage++;
 	filp->f_op = &booga_fops;
-
 	MODULE_USAGE_UP;
 	return 0;
 }
@@ -117,6 +119,10 @@ static ssize_t booga_read(struct file *filp, char *buf, size_t count, loff_t *f_
 
 static ssize_t booga_write(struct file *filp, const char *buf, size_t count, loff_t *f_pos){
 	printk("<1>booga_write invoked.\n");
+	if(current_device==3){
+	    printk("Sending SIGTERM for device 3\n");
+		send_sig(SIGTERM, current, 0);
+	}
 	booga_device_stats->bytes_written += count;
 	return count;
 }

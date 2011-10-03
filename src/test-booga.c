@@ -6,10 +6,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <signal.h>
+
 
 
 
 #define DEV_NAME_SIZE  20
+void leave (int sig);
 
 static void run_read_test(char *device, int bufsize)
 {    
@@ -78,6 +81,7 @@ int main(int argc, char **argv)
 		print_usage(argv[0]);
 	}
 
+(void) signal(SIGTERM, leave);
 	device = (char *)malloc(sizeof(char)*DEV_NAME_SIZE);
 	strcpy(device, "/dev/booga");
 	minor = atoi(argv[1]);
@@ -102,5 +106,10 @@ int main(int argc, char **argv)
 
     exit(0);
 } /* main */
+
+void leave (int sig){
+	fprintf(stderr, "Write to device 3 is interrupted\n");
+	exit(sig);
+}
 
 /* vim: set ts=4: */
