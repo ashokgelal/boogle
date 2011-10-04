@@ -39,7 +39,7 @@ MODULE_LICENSE("GPL");
 
 uint current_device;
 uint random_phrases_count[4];
-char * random_phrases[] = {"booga! booga!", "googoo! gaga!", "wooga! wooga!", "neka! maka!"};
+char * random_phrases[] = {"booga! booga!", "googoo! gaagaa!", "wooga! wooga!", "neka! maka!"};
 static booga_stats *booga_device_stats;
 
 static int booga_open(struct inode *inode, struct file *filp);
