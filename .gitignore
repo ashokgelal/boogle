@@ -5,4 +5,6 @@ src/Module.symvers
 src/*.ko
 src/booga.mod.c
 src/modules.order
+tests/*.o
+tests/*
 README
