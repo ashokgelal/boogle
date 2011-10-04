@@ -8,14 +8,10 @@
 #include <fcntl.h>
 #include <signal.h>
 
-
-
-
 #define DEV_NAME_SIZE  20
 void leave (int sig);
 
-static void run_read_test(char *device, int bufsize)
-{    
+static void run_read_test(char *device, int bufsize) {
 	char *buf;
 	int src;
 	int in;
@@ -73,7 +69,7 @@ static void print_usage(char *program_name)
 
 int main(int argc, char **argv)
 {
-	int bufsize; 
+	int bufsize;
 	char *device;
 	int minor;
 

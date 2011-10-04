@@ -2,9 +2,9 @@
  ============================================================================
  Name        : booga.c
  Author      : Ashok Gelal
- Version     :
+ Version     : 0.1
  Copyright   : All Wrongs Reserved
- Description : Hello World in C, Ansi-style
+ Description : booga driver for Linux >= 3.0
  ============================================================================
  */
 
@@ -121,12 +121,17 @@ static ssize_t booga_write(struct file *filp, const char *buf, size_t count, lof
 	printk("<1>booga_write invoked.\n");
 	if(current_device==3){
 	    printk("Sending SIGTERM for device 3\n");
+	    // send termination signal to current task. The caller of this write operation
+	    // has to handle the trap. See ../tests/test-sigterm.c on how this can be done
 		send_sig(SIGTERM, current, 0);
 	}
 	booga_device_stats->bytes_written += count;
 	return count;
 }
 
+/*
+ * Returns a random phrase
+ */
 static char* get_random_phrase(void){
 	char randval;
 	uint choice ;
